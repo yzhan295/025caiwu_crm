@@ -2,6 +2,7 @@ package com.ifinance;
 
 import com.ifinance.controller.IndexController;
 import com.ifinance.controller.follow.FollowController;
+import com.ifinance.controller.user.UserController;
 import com.ifinance.interceptor.AuthInterceptor;
 import com.ifinance.model._MappingKit;
 import com.jfinal.config.Constants;
@@ -30,6 +31,7 @@ public class GlobalConfig extends JFinalConfig {
 	public void configRoute(Routes me) {
 		me.add("/", IndexController.class);
 		me.add("/follow", FollowController.class);
+		me.add("/user", UserController.class);
 	}
 
 	public void configEngine(Engine me) {

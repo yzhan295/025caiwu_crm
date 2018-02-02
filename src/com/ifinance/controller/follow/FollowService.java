@@ -43,7 +43,7 @@ public class FollowService extends BaseService {
 		}
 		object.put("item", array);
 
-		return respJsonSuccess(array);
+		return respJsonSuccess(object);
 	}
 	
 }

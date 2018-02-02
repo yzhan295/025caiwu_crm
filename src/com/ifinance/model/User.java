@@ -8,4 +8,9 @@ import com.ifinance.model.base.BaseUser;
 @SuppressWarnings("serial")
 public class User extends BaseUser<User> {
 	public static final User dao = new User().dao();
+	
+	public User getUserByMobile(String mobile)
+	{
+		return dao.findFirst("select * from user where mobile = '"+mobile+"'");
+	}
 }
