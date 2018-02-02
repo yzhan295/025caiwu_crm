@@ -1,0 +1,63 @@
+<!doctype html>
+<html>
+
+#include("common/_head.html")
+<body data-type="generalComponents">
+
+	#include("common/_header.html", menu_index="finance")
+
+	<div class="tpl-content-wrapper">
+
+
+		<div class="tpl-portlet-components">
+			<div class="portlet-title">
+				<div class="caption font-green bold">
+					<span class="am-icon-flag"></span>我的财务
+				</div>
+				<ol class="am-breadcrumb">
+					<li><a href="#" class="am-icon-home">财务管理</a></li>
+					<li class="am-active">我的财务</li>
+				</ol>
+			</div>
+			<div class="tpl-block">
+
+				<div class="am-g">
+					<div class="am-u-sm-8">
+						<form class="am-form">
+							<table
+								class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
+								<thead>
+									<tr class="am-success">
+
+										<th>剩余号码</th>
+										<th>累计已分配号码</th>
+										<th>单价</th>
+									</tr>
+								</thead>
+								<tbody id="finance">
+									<tr>
+										<td><span id="leftNumber">-</span></td>
+										<td><span id="totalRec">-</span></td>
+										<td><span id="unitprice">-</span></td>
+									</tr>
+								</tbody>
+							</table>
+
+						</form>
+					</div>
+
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+
+
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/amazeui.min.js"></script>
+	<script src="assets/js/common.js"></script>
+	<script src="assets/js/finance.js"></script>
+</body>
+
+</html>

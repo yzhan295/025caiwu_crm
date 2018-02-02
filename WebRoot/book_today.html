@@ -1,0 +1,213 @@
+<!doctype html>
+<html>
+
+#include("common/_head.html")
+<body data-type="generalComponents">
+
+
+    #include("common/_header.html", menu_index="follow")
+
+        <div class="tpl-content-wrapper">
+            
+
+            <div class="tpl-portlet-components">
+                <div class="portlet-title">
+                    <div class="caption font-green bold">
+                        <span class="am-icon-flag"></span>今日预约
+                    </div>
+                    <ol class="am-breadcrumb">
+                        <li><a href="#" class="am-icon-home">客户管理</a></li>
+                        <li class="am-active">今日预约</li>
+                    </ol>
+                </div>
+                
+                <div class="tpl-block">
+                    <div class="am-g">
+                        <div class="am-u-sm-12">
+                            <form class="am-form">
+                                <table class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
+                                    <thead>
+                                        <tr class="am-success">
+                                            
+                                            <th >姓名</th>
+                                            <th >分类</th>
+                                            <!-- <th >来源</th> -->
+                                            <th >手机</th>
+                                            <th >微信号</th>
+                                            <th >起名</th>
+                                            <th >收藏</th>
+                                            <th >录入时间</th>
+                                            <th >行业</th>
+
+                                            <th class="table-set">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="follow-list">
+                                        
+                                    </tbody>
+                                </table>
+                                <div class="am-cf">
+
+                                    <div class="am-fr">
+                                        <ul class="am-pagination tpl-pagination">
+
+                                        </ul>
+                                    </div>
+                                </div>
+                                <hr>
+
+                            </form>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="tpl-alert"></div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="am-popup" id="my-popup">
+	  <div class="am-popup-inner">
+	    <div class="am-popup-hd">
+	      <h4 class="am-popup-title">客户预约</h4>
+	      <span data-am-modal-close
+	            class="am-close">&times;</span>
+	    </div>
+	    <div class="am-popup-bd">
+	      <form class="am-form am-form-horizontal">
+			  <div class="am-form-group">
+			    <label for="doc-ipt-3" class="am-u-sm-3 am-form-label">微信号</label>
+			    <div class="am-u-sm-9">
+			      <input type="text" id="wxAccount" placeholder="输入客户微信号">
+			    </div>
+			  </div>
+			
+			  <div class="am-form-group">
+			    <label for="doc-ipt-pwd-2" class="am-u-sm-3 am-form-label">预约时间</label>
+			    <div class="am-u-sm-9">
+			      <div class="am-input-group date" id="datetimepicker" data-date-format="yyyy-mm-dd">
+				  <input size="16" type="text" id="bookedTime" class="am-form-field" readonly>
+				  <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
+				</div>
+			    </div>
+			  </div>
+			  
+			   <div class="am-form-group">
+			    <label for="doc-ipt-pwd-2" class="am-u-sm-3 am-form-label">备注</label>
+			    <div class="am-u-sm-9">
+			      <textarea class="" rows="5" id="comment"></textarea>
+			    </div>
+			  </div>
+			
+			  <div class="am-form-group">
+			    <div class="am-u-lg-2 am-u-sm-offset-5">
+			       <button type="button" class="am-btn am-btn-success" onclick="saveBook();">保存</button>
+			    </div>
+			  </div>
+			</form>
+			<div class="am-form-group  am-form-warning" style="margin-top: 10px; text-align: center;">
+				<label class="am-form-label" id="error-alert1">&nbsp;</label>
+			</div>
+	    </div>
+	  </div>
+	</div>
+	<div class="am-modal am-modal-alert" tabindex="-1" id="my-alert">
+	  <div class="am-modal-dialog">
+	    <div class="am-modal-hd">操作结果</div>
+	    <div class="am-modal-bd">
+	      
+	    </div>
+	    <div class="am-modal-footer">
+	      <span class="am-modal-btn">确定</span>
+	    </div>
+	  </div>
+	</div>
+	
+	<div class="am-popup" id="detail-popup">
+	  <div class="am-popup-inner">
+	    <div class="am-popup-hd">
+	      <h4 class="am-popup-title">客户详情</h4>
+	      <span data-am-modal-close
+	            class="am-close">&times;</span>
+	    </div>
+	    <div class="am-popup-bd">
+			<div data-am-widget="tabs" style="margin: 0;"
+			       class="am-tabs am-tabs-default"
+			        >
+			      <ul class="am-tabs-nav am-cf">
+			          <li class="am-active"><a href="[data-tab-panel-0]">查询次数</a></li>
+			          <li class=""><a href="[data-tab-panel-1]">收藏列表</a></li>
+
+			      </ul>
+			      <div class="am-tabs-bd">
+			          <div data-tab-panel-0 class="am-tab-panel am-active" style="max-height: 430px; overflow-y: scroll;">
+			          		<table class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
+                                  <thead>
+                                      <tr class="am-success">
+                                          <th>行业</th>
+                                          <th>查询次数</th>
+                                      </tr>
+                                  </thead>
+                                  <tbody id="query-log-list">
+							    </tbody>
+                              </table>
+	          		  </div>
+			          <div data-tab-panel-1 class="am-tab-panel " style="max-height: 430px; overflow-y: scroll;">
+			          		<table class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
+                                 <thead>
+                                     <tr class="am-success">
+                                         <th>收藏公司名</th>
+                                     </tr>
+                                 </thead>
+                                 <tbody id="collect-list">
+						    	 	
+						    	 </tbody>
+                            </table>
+			          </div>
+			      </div>
+			  </div>
+	    </div>
+	  </div>
+	</div> 
+	
+	<script id="follow-tr-template">
+        <tr>
+            <td>__name__</td>
+            <td>__safeState__</td>
+            <td>__mobile__</td>
+            <td>__wxaccount__</td>
+            <td>__qmcount__</td>
+            <td>__collcount__</td>
+            <td>__createTime__</td>
+            <td>__hangye__</td>
+            <td>
+                <div class="am-btn-toolbar">
+                    <div class="am-btn-group am-btn-group-xs">
+	                    <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick="openDetail('__userToken__');"><span class="am-icon-pencil-square-o"></span> 详情</button>
+	                    <button type="button" class="am-btn am-btn-default am-btn-xs am-hide-sm-only" onclick="book('__userToken_book__');"><span class="am-icon-copy"></span> 预约</button>
+
+                    </div>
+                </div>
+            </td>
+        </tr>   
+    </script>
+    <script id="customer-select-template">
+	   <select data-am-selected="{btnSize: 'sm'}" onchange="changeCustomerType(this.options[this.options.selectedIndex].value, '__userToken__')">
+	      <option value="1" __SELECT1__>优质</option>
+	      <option value="2" __SELECT2__>普通</option>
+	      <option value="3" __SELECT3__>无效客户</option>
+	      <option value="0" __SELECT0__>未联系</option>
+	      <option value="4" __SELECT4__>未接通</option>
+	      <option value="5" __SELECT5__>已签单</option>
+	      <option value="6" __SELECT6__>空号</option>
+	  </select>
+    </script>
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/amazeui.min.js"></script>
+    <script src="assets/js/amazeui.datetimepicker.min.js"></script>
+    <script type="text/javascript" src="assets/js/amazeui.datetimepicker.zh-CN.js" charset="UTF-8"></script>
+    <script src="assets/js/common.js"></script>
+    <script src="assets/js/book_today.js"></script>
+</body>
+
+</html>

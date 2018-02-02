@@ -1,0 +1,7 @@
+#主数据库
+jdbcUrl = jdbc:mysql://47.96.166.143:3306/caiwu_crm?zeroDateTimeBehavior=convertToNull
+user = root
+password = Min7719735
+devMode =true
+
+

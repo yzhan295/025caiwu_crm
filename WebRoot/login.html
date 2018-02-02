@@ -1,0 +1,77 @@
+<!doctype html>
+<html>
+
+#include("common/_head.html")
+
+<body data-type="login">
+
+  <div class="am-g myapp-login">
+	<div class="myapp-login-logo-block  tpl-login-max">
+		<div class="myapp-login-logo-text">
+			<div class="myapp-login-logo-text">
+				销售系统<span> 登录</span> <i class="am-icon-skyatlas"></i>
+				
+			</div>
+		</div>
+
+		<div class="am-u-sm-10 login-am-center">
+			<form class="am-form">
+				<fieldset>
+					
+					<div class="am-form-group">
+						<input type="text" class="" id="mobile" placeholder="请输入账号">
+					</div>
+					<div class="am-form-group">
+						<input type="password" class="" id="password" placeholder="请输入密码">
+					</div>
+					
+					<div class="am-form-group  am-form-warning" style="margin-top: 10px;">
+	    				<label class="am-form-label" id="error-alert">&nbsp;</label>
+	    			</div>
+					<p><button type="button" class="am-btn am-btn-default" onclick="login();">登录销售管理系统</button></p>
+				</fieldset>
+			</form>
+		</div>
+	</div>
+</div>
+
+  <script src="assets/js/jquery.min.js"></script>
+  <script src="assets/js/amazeui.min.js"></script>
+  <script src="assets/js/common.js"></script>
+  <script>
+	  function login() {
+		  var mobile = $('#mobile').val();
+		  var password = $('#password').val();
+		  
+		  if(isNull(mobile)) {
+			  $('#error-alert').html('账号不能为空！');
+			  return;
+		  }
+		  
+		  if(isNull(password)) {
+			  $('#error-alert').html('密码不能为空！');
+			  return;
+		  }
+		  $.ajax({
+	          url: "user/login",
+	          type : "POST",
+	          dataType: "json",
+	          contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+	  		data: {
+	  			mobile: mobile,
+	  			password: password
+	  		},
+	        success: function(data) {
+	          	console.log(data);
+	          	if(data.result == 0) {
+	          		$('#error-alert').html(data.data);
+	          	} else {
+	          		window.location.href='index';
+	          	}
+	          }
+	      });
+	  }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+Table: customer
+---------------+--------------+------+-----+---------+---------
+ Field         | Type         | Null | Key | Default | Remarks 
+---------------+--------------+------+-----+---------+---------
+ id            | INT(10)      | NO   | PRI |         |         
+ name          | VARCHAR(20)  | NO   |     |         | 姓名      
+ mobile        | VARCHAR(10)  | NO   |     |         |         
+ source        | INT(10)      | NO   |     |         | 渠道      
+ phone_state   | INT(10)      | NO   |     |         |         
+ wechat_state  | INT(10)      | NO   |     |         |         
+ sms_state     | INT(10)      | NO   |     |         |         
+ customer_type | INT(10)      | YES  |     |         |         
+ user_id       | INT(10)      | NO   |     |         |         
+ update_time   | DATETIME(19) | NO   |     |         |         
+ create_time   | DATETIME(19) | NO   |     |         |         
+---------------+--------------+------+-----+---------+---------
+
+Table: follow
+--------------+--------------+------+-----+---------+---------
+ Field        | Type         | Null | Key | Default | Remarks 
+--------------+--------------+------+-----+---------+---------
+ id           | INT(10)      | NO   | PRI |         |         
+ customer_id  | INT(10)      | NO   |     |         |         
+ follow_desc  | VARCHAR(200) | NO   |     |         |         
+ user_id      | INT(10)      | NO   |     |         |         
+ voice_length | INT(10)      | YES  |     |         |         
+ voice_url    | VARCHAR(200) | YES  |     |         |         
+ follow_time  | DATETIME(19) | NO   |     |         |         
+--------------+--------------+------+-----+---------+---------
+
+Table: user
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ id          | INT(10)      | NO   | PRI |         |         
+ mobile      | VARCHAR(20)  | NO   |     |         |         
+ name        | VARCHAR(10)  | NO   |     |         |         
+ password    | VARCHAR(20)  | NO   |     |         |         
+ role        | INT(10)      | NO   |     |         | 0: 管理员1: 销售总监2: 销售主管3: 销售人员
+ p_id        | INT(10)      | YES  |     |         | 上级ID    
+ update_time | DATETIME(19) | NO   |     |         |         
+ create_time | DATETIME(19) | NO   |     |         |         
+-------------+--------------+------+-----+---------+---------
+
