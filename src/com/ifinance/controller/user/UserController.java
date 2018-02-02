@@ -14,6 +14,14 @@ public class UserController extends BaseController {
 	}
 	
 	/**
+	 * 列出我的所有下属
+	 */
+	public void listSubUsers() {
+		String respone = UserService.service.listSubUsers(this);
+		renderJson(respone);
+	}
+	
+	/**
 	 *  退出接口
 	 */
 	public void quit()

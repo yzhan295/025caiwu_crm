@@ -1,5 +1,7 @@
 package com.ifinance.model;
 
+import java.util.List;
+
 import com.ifinance.model.base.BaseUser;
 
 /**
@@ -13,4 +15,11 @@ public class User extends BaseUser<User> {
 	{
 		return dao.findFirst("select * from user where mobile = '"+mobile+"'");
 	}
+	
+	public List<User> getUsersByPid(int pid)
+	{
+		return dao.find("select * from user where p_id=" + pid);
+	}
+	
+	
 }
