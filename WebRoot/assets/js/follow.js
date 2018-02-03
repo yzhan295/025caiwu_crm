@@ -43,7 +43,7 @@ function loadFollowList(pageNo) {
 		customer_type = '';
 	}
 	$.ajax({
-        url: "market/list",
+        url: "follow/listFollowDetail",
         type : "POST",
         dataType: "json",
         contentType : "application/x-www-form-urlencoded;charset=UTF-8",

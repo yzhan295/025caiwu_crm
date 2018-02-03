@@ -12,4 +12,8 @@ public class IndexController extends BaseController {
 		render("login.html");
 	}
 	
+	public void follow() {
+		render("follow.html");
+	}
+	
 }

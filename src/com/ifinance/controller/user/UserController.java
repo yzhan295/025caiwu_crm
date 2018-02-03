@@ -21,6 +21,8 @@ public class UserController extends BaseController {
 		renderJson(respone);
 	}
 	
+	
+	
 	/**
 	 *  退出接口
 	 */
