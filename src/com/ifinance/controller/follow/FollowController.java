@@ -10,7 +10,7 @@ public class FollowController extends BaseController {
 	 * 客户跟单列表
 	 */
 	public void listCustomer() {
-		String respone = FollowService.service.list(this);
+		String respone = FollowService.service.listCustomers(this);
 		renderJson(respone);
 	} 
 	
@@ -30,17 +30,18 @@ public class FollowController extends BaseController {
 	}
 	
 	/**
-	 * 更新跟单详细
+	 * 新建跟单详细
 	 */
-	public void createFollowDetail(Follow follow) {
-		
+	public void createFollowDetail() {
+		String respone = FollowService.service.createFollowDetail(this);
+		renderJson(respone);
 	}
 	
 	/**
 	 * 客户跟单详细列表
 	 */
-	public void listFollowDetail() {
-		String respone = FollowService.service.list(this);
+	public void getHistoryList() {
+		String respone = FollowService.service.getFollowHistoryList(this);
 		renderJson(respone);
 	} 
 }

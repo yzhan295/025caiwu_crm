@@ -16,6 +16,9 @@ public class Customer extends BaseCustomer<Customer> {
 	       return Follow.dao.findFirst("select * from follow where customer_id = " + customerId + " order by follow_time desc limit 0, 1");
 	}
 	
+	public List<Follow> getFollowHistoryList(int customerId) {
+	       return Follow.dao.find("select * from follow where customer_id = " + customerId + " order by follow_time desc");
+	}
 	
 	public Page<Customer> paginate(List<User> allUsers, int pageNumber, int type) {
 		StringBuffer sqlInCondition = new StringBuffer();

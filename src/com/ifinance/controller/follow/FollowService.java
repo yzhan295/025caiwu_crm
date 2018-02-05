@@ -1,6 +1,7 @@
 package com.ifinance.controller.follow;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.alibaba.fastjson.JSONArray;
@@ -17,7 +18,38 @@ public class FollowService extends BaseService {
 
 	public static final FollowService service = new FollowService();
 	
-	public String list(BaseController bc) {
+	/**
+	 * 获取历史跟单记录
+	 * @param bc
+	 * @return
+	 */
+	public String getFollowHistoryList(BaseController bc) {
+		int customerId = bc.getParaToInt("customerId", -1);
+		JSONObject object = new JSONObject();
+		
+		List<Follow> followList = Customer.dao.getFollowHistoryList(customerId);
+		
+		JSONArray array = new JSONArray();
+		for (int i = 0; i < followList.size(); i++) {
+			Follow follow = followList.get(i);
+			JSONObject objectItem = new JSONObject();
+			objectItem.put("username", User.dao.findById(follow.getUserId()).getName());
+			objectItem.put("followDesc", follow.getFollowDesc());
+			objectItem.put("followTime",  DateUtil.dateToString(follow.getFollowTime(), DateUtil.FORMAT_YYMMDDHHMMSS));
+			
+			array.add(objectItem);
+		}
+		object.put("item", array);
+		
+		return respJsonSuccess(object);
+	}
+	
+	/**
+	 * 获取客户列表
+	 * @param bc
+	 * @return
+	 */
+	public String listCustomers(BaseController bc) {
 		User user = (User)bc.getSession().getAttribute("user");
 		List<User> allUsersIncludeMyself = new ArrayList<User>();
 		// 添加当前用户自身
@@ -107,5 +139,26 @@ public class FollowService extends BaseService {
 		
 		return respJsonSuccess("更新成功！");
 	}	
+	
+	/**
+	 * 新建跟单详细
+	 * @param bc
+	 * @return
+	 */
+	public String createFollowDetail(BaseController bc) {
+		User user = (User)bc.getSession().getAttribute("user");
+		int customerId = bc.getParaToInt("customerId", -1);
+		String followDesc = bc.getPara("followDesc", "");
+		
+		Follow follow = new Follow();
+		follow.setUserId(user.getId());
+		follow.setCustomerId(customerId);
+		follow.setFollowDesc(followDesc);
+		follow.setFollowTime(new Date());
+		
+		follow.save();
+		
+		return respJsonSuccess("保存成功！");
+	}
 	
 }

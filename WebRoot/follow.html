@@ -8,7 +8,7 @@
     #include("common/_header.html", menu_index="follow")
 
         <div class="tpl-content-wrapper">
-            
+            <input type="hidden" id="pageNumber"/>
 
             <div class="tpl-portlet-components">
                 <div class="portlet-title">
@@ -100,44 +100,41 @@
                 <div class="tpl-alert"></div>
             </div>
         </div>
-    </div>
     
     <div class="am-popup" id="my-popup">
 	  <div class="am-popup-inner">
 	    <div class="am-popup-hd">
-	      <h4 class="am-popup-title">客户预约</h4>
+	      <h4 class="am-popup-title">客户跟单</h4>
 	      <span data-am-modal-close
 	            class="am-close">&times;</span>
 	    </div>
 	    <div class="am-popup-bd">
 	      <form class="am-form am-form-horizontal">
-			  <div class="am-form-group">
-			    <label for="doc-ipt-3" class="am-u-sm-3 am-form-label">微信号</label>
-			    <div class="am-u-sm-9">
-			      <input type="text" id="wxAccount" placeholder="输入客户微信号">
+	      	  <div class="am-form-group">
+			    <label for="doc-ipt-pwd-2" class="am-u-sm-2 am-form-label">备注</label>
+			    <div class="am-u-sm-8">
+			      <textarea class="" rows="2" id="followDesc"></textarea>
 			    </div>
+			    <div class="am-u-sm-2">
+			      <button type="button" class="am-btn am-btn-success" onclick="save();">保存</button>
+			    </div>
+			    
 			  </div>
 			
 			  <div class="am-form-group">
-			    <label for="doc-ipt-pwd-2" class="am-u-sm-3 am-form-label">预约时间</label>
-			    <div class="am-u-sm-9">
-			      <div class="am-input-group date" id="datetimepicker" data-date-format="yyyy-mm-dd">
-				  <input size="16" type="text" id="bookedTime" class="am-form-field" readonly>
-				  <span class="am-input-group-label add-on"><i class="icon-th am-icon-calendar"></i></span>
-				</div>
-			    </div>
-			  </div>
-			  
-			   <div class="am-form-group">
-			    <label for="doc-ipt-pwd-2" class="am-u-sm-3 am-form-label">备注</label>
-			    <div class="am-u-sm-9">
-			      <textarea class="" rows="5" id="comment"></textarea>
-			    </div>
-			  </div>
-			
-			  <div class="am-form-group">
-			    <div class="am-u-lg-2 am-u-sm-offset-5">
-			       <button type="button" class="am-btn am-btn-success" onclick="saveBook();">保存</button>
+			    <div class="am-u-sm-12">
+			    		<table class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover" style="font-size: 12px;">
+                          <thead>
+                              <tr class="am-success">
+                                  <th >备注</th>
+                                  <th >时间</th>
+                                  <th >跟单人</th>
+                              </tr>
+                          </thead>
+                          <tbody id="history-list">
+                                        
+                          </tbody>
+                     </table>
 			    </div>
 			  </div>
 			</form>
@@ -158,53 +155,6 @@
 	    </div>
 	  </div>
 	</div>
-	
-	<div class="am-popup" id="detail-popup">
-	  <div class="am-popup-inner">
-	    <div class="am-popup-hd">
-	      <h4 class="am-popup-title">客户详情</h4>
-	      <span data-am-modal-close
-	            class="am-close">&times;</span>
-	    </div>
-	    <div class="am-popup-bd">
-			<div data-am-widget="tabs" style="margin: 0;"
-			       class="am-tabs am-tabs-default"
-			        >
-			      <ul class="am-tabs-nav am-cf">
-			          <li class="am-active"><a href="[data-tab-panel-0]">查询次数</a></li>
-			          <li class=""><a href="[data-tab-panel-1]">收藏列表</a></li>
-
-			      </ul>
-			      <div class="am-tabs-bd">
-			          <div data-tab-panel-0 class="am-tab-panel am-active" style="max-height: 430px; overflow-y: scroll;">
-			          		<table class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
-                                  <thead>
-                                      <tr class="am-success">
-                                          <th>行业</th>
-                                          <th>查询次数</th>
-                                      </tr>
-                                  </thead>
-                                  <tbody id="query-log-list">
-							    </tbody>
-                              </table>
-	          		  </div>
-			          <div data-tab-panel-1 class="am-tab-panel " style="max-height: 430px; overflow-y: scroll;">
-			          		<table class="am-table am-table-bordered am-table-radius am-table-striped am-table-hover">
-                                 <thead>
-                                     <tr class="am-success">
-                                         <th>收藏公司名</th>
-                                     </tr>
-                                 </thead>
-                                 <tbody id="collect-list">
-						    	 	
-						    	 </tbody>
-                            </table>
-			          </div>
-			      </div>
-			  </div>
-	    </div>
-	  </div>
-	</div> 
 	
 	<script id="follow-tr-template">
         <tr>
@@ -232,7 +182,7 @@
             <td>
                 <div class="am-btn-toolbar">
                     <div class="am-btn-group am-btn-group-xs">
-                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick="openDetail('__userToken__');"><span class="am-icon-pencil-square-o"></span> 跟单</button>
+                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick="openDetail('__CUSTOMER_ID__');"><span class="am-icon-pencil-square-o"></span> 跟单</button>
 
                     </div>
                 </div>

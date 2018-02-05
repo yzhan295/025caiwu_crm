@@ -99,6 +99,8 @@ function commonFollowList(data) {
                 .replace('__phone__', phone_select_template)
                 .replace('__wechat__', wechat_select_template)
                 .replace('__sms__', sms_select_template)
+                .replace('__CUSTOMER_ID__', data.data.item[i].id)
+                
                 .replace('__followsaler__', data.data.item[i].followsaler)
                 .replace('__followcount__', data.data.item[i].followcount)
                 .replace('__followtime__', isNull(data.data.item[i].followtime) ? '' : data.data.item[i].followtime)
@@ -109,6 +111,9 @@ function commonFollowList(data) {
     } 
 
     $('.am-pagination').html('');
+    
+    // 设置PageNumber到全局hidden中
+    $('#pageNumber').val(data.data.pageNumber);
     
     if (data.data.pageNumber != 1) {
         $('.am-pagination').append('<li class="am-pagination-first "><a href="javascript:void(0);" onclick="loadFollowList(1)">第一页</a></li>');
@@ -263,3 +268,73 @@ function changeCustomerType(val, id){
         }
      });
 }  
+
+function openDetail(customerId) {
+	var $modal = $('#my-popup');
+	$modal.modal('open');
+	
+	$('#my-popup').data('customerId', customerId);
+	$('#followDesc').val('');
+	
+	$('#history-list').html('');
+	$.ajax({
+        url: "follow/getHistoryList",
+        type : "POST",
+        dataType: "json",
+        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customerId: customerId
+		},
+        success: function(data) {
+        	console.log(data);
+        	if(data.result == 1) {
+        		for(var i=0; i< data.data.item.length; i++) {
+        			var templateHistory = '<tr><td>'+data.data.item[i].followDesc+'</td><td>'+data.data.item[i].followTime+'</td><td>'+data.data.item[i].username+'</td><tr>';  
+        			$('#history-list').append(templateHistory);
+        		}
+        	} 
+        }
+    });
+}
+
+function save() {
+	var customerId = $('#my-popup').data('customerId');
+	var followDesc = $('#followDesc').val();
+	
+	if (isNull(followDesc)) {
+		$('.am-alert').show();
+		$('.am-alert').html('备注不能为空！');
+		setTimeout(function(){
+			$('.am-alert').hide();
+	    }, 2000);
+		return;
+	}	
+	
+	$.ajax({
+        url: "follow/createFollowDetail",
+        type : "POST",
+        dataType: "json",
+        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customerId: customerId,
+			followDesc:followDesc
+		},
+        success: function(data) {
+	        	console.log(data);
+	        	if(data.result == 1) {
+	        		$('.am-alert').show();
+	        		$('.am-alert').html(data.data);
+	        		
+	        		setTimeout(function(){
+	        			$('.am-alert').hide();
+	    		    }, 2000);
+	        		
+	        		setTimeout(function(){
+	        			$('#my-popup').modal('close');
+	    		    }, 2000);
+	        		
+	        		loadFollowList($('#pageNumber').val());
+	        	} 
+        }
+    });
+}
