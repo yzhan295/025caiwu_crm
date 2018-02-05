@@ -28,16 +28,7 @@ public class User extends BaseUser<User> {
 	 */
 	public int getTodayIntentCount(List<User> allSubUsers)
 	{
-		StringBuffer sqlInCondition = new StringBuffer();
-		for(int i=0; i<allSubUsers.size(); i++) {
-			sqlInCondition.append(allSubUsers.get(i).getId());
-			// 最后一条数据不需要加","
-			if (i < (allSubUsers.size() - 1)) {
-				sqlInCondition.append(",");
-			}
-		}
-		
-		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+") and  to_days(create_time) = to_days(now())");
+		User user = dao.findFirst(commonIntentSql(allSubUsers) + " and  to_days(create_time) = to_days(now())");
 		
 		return user.getInt("count");
 	}
@@ -49,16 +40,7 @@ public class User extends BaseUser<User> {
 	 */
 	public int getWeekIntentCount(List<User> allSubUsers)
 	{
-		StringBuffer sqlInCondition = new StringBuffer();
-		for(int i=0; i<allSubUsers.size(); i++) {
-			sqlInCondition.append(allSubUsers.get(i).getId());
-			// 最后一条数据不需要加","
-			if (i < (allSubUsers.size() - 1)) {
-				sqlInCondition.append(",");
-			}
-		}
-		
-		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+") and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(create_time)");
+		User user = dao.findFirst(commonIntentSql(allSubUsers) + " and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(create_time)");
 		
 		return user.getInt("count");
 	}
@@ -70,16 +52,7 @@ public class User extends BaseUser<User> {
 	 */
 	public int getMonthIntentCount(List<User> allSubUsers)
 	{
-		StringBuffer sqlInCondition = new StringBuffer();
-		for(int i=0; i<allSubUsers.size(); i++) {
-			sqlInCondition.append(allSubUsers.get(i).getId());
-			// 最后一条数据不需要加","
-			if (i < (allSubUsers.size() - 1)) {
-				sqlInCondition.append(",");
-			}
-		}
-		
-		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+") and  DATE_FORMAT(create_time,'%Y%m' ) = DATE_FORMAT(CURDATE() , '%Y%m' )");
+		User user = dao.findFirst(commonIntentSql(allSubUsers) + " and  DATE_FORMAT(create_time,'%Y%m' ) = DATE_FORMAT(CURDATE() , '%Y%m' )");
 		
 		return user.getInt("count");
 	}
@@ -89,20 +62,71 @@ public class User extends BaseUser<User> {
 	 * @param childId
 	 * @return
 	 */
-	public int getTotalIntentCount(List<User> allSubUsers)
+	public int getTotalIntentCount(List<User> allUsers)
 	{
+		User user = dao.findFirst(commonIntentSql(allUsers));
+		
+		return user.getInt("count");
+	}
+	
+	/**
+	 * 意向客户统计 common
+	 * @param allUsers
+	 * @return
+	 */
+	public String commonIntentSql(List<User> allUsers) {
 		StringBuffer sqlInCondition = new StringBuffer();
-		for(int i=0; i<allSubUsers.size(); i++) {
-			sqlInCondition.append(allSubUsers.get(i).getId());
+		for(int i=0; i<allUsers.size(); i++) {
+			sqlInCondition.append(allUsers.get(i).getId());
 			// 最后一条数据不需要加","
-			if (i < (allSubUsers.size() - 1)) {
+			if (i < (allUsers.size() - 1)) {
 				sqlInCondition.append(",");
 			}
 		}
 		
-		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+")");
+		return "select count(*) count from customer where customer_type not in (0, 100) and user_id in ("+sqlInCondition.toString()+")";
+	}
+	
+	/**
+	 * 业绩统计 common
+	 * @param allUsers
+	 * @return
+	 */
+	public String commonSaleSql(List<User> allUsers) {
+		StringBuffer sqlInCondition = new StringBuffer();
+		for(int i=0; i<allUsers.size(); i++) {
+			sqlInCondition.append(allUsers.get(i).getId());
+			// 最后一条数据不需要加","
+			if (i < (allUsers.size() - 1)) {
+				sqlInCondition.append(",");
+			}
+		}
 		
-		return user.getInt("count");
+		return "select sum(sign_price) summary from Saleorder where user_id in ("+sqlInCondition.toString()+")";
+	}
+	
+	/**
+	 * 本周业绩
+	 * @param childId
+	 * @return
+	 */
+	public int getWeekSaleCount(List<User> allSubUsers)
+	{
+		User user = dao.findFirst(commonSaleSql(allSubUsers) + " and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(create_time)");
+		
+		return user.getInt("summary");
+	}
+	
+	/**
+	 * 本月业绩
+	 * @param childId
+	 * @return
+	 */
+	public int getMonthSaleCount(List<User> allSubUsers)
+	{
+		User user = dao.findFirst(commonSaleSql(allSubUsers) + " and  DATE_FORMAT(create_time,'%Y%m' ) = DATE_FORMAT(CURDATE() , '%Y%m' )");
+		
+		return user.getInt("summary");
 	}
 	
 }

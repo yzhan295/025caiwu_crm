@@ -73,14 +73,6 @@ public abstract class BaseCustomer<M extends BaseCustomer<M>> extends Model<M> i
 		return getInt("customer_type");
 	}
 
-	public void setSignPrice(java.lang.Integer signPrice) {
-		set("sign_price", signPrice);
-	}
-
-	public java.lang.Integer getSignPrice() {
-		return getInt("sign_price");
-	}
-
 	public void setUserId(java.lang.Integer userId) {
 		set("user_id", userId);
 	}

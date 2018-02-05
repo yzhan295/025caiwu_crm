@@ -18,6 +18,7 @@ public class _MappingKit {
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("customer", "id", Customer.class);
 		arp.addMapping("follow", "id", Follow.class);
+		arp.addMapping("saleorder", "id", Saleorder.class);
 		arp.addMapping("user", "id", User.class);
 	}
 }

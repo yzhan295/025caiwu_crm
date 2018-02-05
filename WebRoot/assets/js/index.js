@@ -38,6 +38,10 @@ function summary() {
         		$('#today_intent').html(data.data.today_intent);
         		$('#month_intent').html(data.data.month_intent);
         		$('#total_intent').html(data.data.total_intent);
+        		
+        		$('#week_sale').html(data.data.week_sale);
+        		$('#month_sale').html(data.data.month_sale);
+        		$('#target_sale').html(data.data.target_sale);
         	} 
         	$.AMUI.progress.done();
         }

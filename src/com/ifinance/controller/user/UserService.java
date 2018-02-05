@@ -81,18 +81,29 @@ public class UserService  extends BaseService {
 		listSubUsersById(user.getId(), allUsersIncludeMyself);
 		
 		// 今日意向客户
-		int todayCount = User.dao.getTodayIntentCount(allUsersIncludeMyself);
+		int todayIntentCount = User.dao.getTodayIntentCount(allUsersIncludeMyself);
 		
 		// 本月意向客户
-		int monthlyCount = User.dao.getMonthIntentCount(allUsersIncludeMyself);
+		int monthIntentCount = User.dao.getMonthIntentCount(allUsersIncludeMyself);
 		
 		// 意向客户总数
-		int totalCount = User.dao.getTotalIntentCount(allUsersIncludeMyself);
+		int totalIntentCount = User.dao.getTotalIntentCount(allUsersIncludeMyself);
+		
+		// 本周销售业绩
+		int weekSale = User.dao.getWeekSaleCount(allUsersIncludeMyself);
+		
+		// 本月销售业绩
+		int monthSale = User.dao.getMonthSaleCount(allUsersIncludeMyself);
 		
 		JSONObject object = new JSONObject();
-		object.put("today_intent", todayCount);
-		object.put("month_intent", monthlyCount);
-		object.put("total_intent", totalCount);
+		object.put("today_intent", todayIntentCount);
+		object.put("month_intent", monthIntentCount);
+		object.put("total_intent", totalIntentCount);
+		
+		object.put("week_sale", weekSale);
+		object.put("month_sale", monthSale);
+		object.put("target_sale", 0);
+		
 		return respJsonSuccess(object);
 	}
 	

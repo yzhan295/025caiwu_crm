@@ -9,8 +9,7 @@ Table: customer
  phone_state   | INT(10)      | NO   |     |         |         
  wechat_state  | INT(10)      | NO   |     |         |         
  sms_state     | INT(10)      | NO   |     |         |         
- customer_type | INT(10)      | YES  |     |         | 0: 无意向 1:A类意向 2:B类意向 3:C类意向 4:D类意向 100:已签约
- sign_price    | INT(10)      | NO   |     | 0       | customer_type=100:已签约才会有值
+ customer_type | INT(10)      | YES  |     |         | 0: 无意向 1:A类意向 2:B类意向 3:C类意向 4:D类意向 100:下单走订单流程
  user_id       | INT(10)      | NO   |     |         |         
  update_time   | DATETIME(19) | NO   |     |         |         
  create_time   | DATETIME(19) | NO   |     |         |         
@@ -28,6 +27,20 @@ Table: follow
  voice_url    | VARCHAR(200) | YES  |     |         |         
  follow_time  | DATETIME(19) | NO   |     |         |         
 --------------+--------------+------+-----+---------+---------
+
+Table: saleorder
+-------------+--------------+------+-----+---------+---------
+ Field       | Type         | Null | Key | Default | Remarks 
+-------------+--------------+------+-----+---------+---------
+ id          | INT(10)      | NO   | PRI |         |         
+ customer_id | INT(10)      | NO   |     |         |         
+ order_desc  | VARCHAR(200) | YES  |     |         |         
+ user_id     | INT(10)      | NO   |     |         |         
+ sign_price  | DECIMAL(10)  | NO   |     |         |         
+ state       | INT(10)      | NO   |     |         | 0: 待付款 1: 已付款
+ update_time | DATETIME(19) | YES  |     |         |         
+ create_time | DATETIME(19) | YES  |     |         |         
+-------------+--------------+------+-----+---------+---------
 
 Table: user
 -------------+--------------+------+-----+---------+---------
