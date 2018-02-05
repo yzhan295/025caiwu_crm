@@ -161,4 +161,30 @@ public class FollowService extends BaseService {
 		return respJsonSuccess("保存成功！");
 	}
 	
+	/**
+	 * 新建客户资料
+	 * @param bc
+	 * @return
+	 */
+	public String createCustomer(BaseController bc) {
+		User user = (User)bc.getSession().getAttribute("user");
+		String customerName = bc.getPara("customer_name", "");
+		String customerPhone = bc.getPara("customer_phone", "");
+		
+		Customer customer = new Customer();
+		customer.setUserId(user.getId());
+		customer.setName(customerName);
+		customer.setMobile(customerPhone);
+		customer.setSource(0);
+		customer.setPhoneState(0);
+		customer.setWechatState(0);
+		customer.setSmsState(0);
+		customer.setCustomerType(0);
+		customer.setCreateTime(new Date());
+		customer.setUpdateTime(new Date());
+		
+		customer.save();
+		return respJsonSuccess("保存成功！");
+	}
+	
 }

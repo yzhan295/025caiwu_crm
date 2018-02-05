@@ -2,7 +2,6 @@ package com.ifinance.controller.follow;
 
 import com.ifinance.base.BaseController;
 import com.ifinance.model.Customer;
-import com.ifinance.model.Follow;
 
 public class FollowController extends BaseController {
 	
@@ -17,8 +16,9 @@ public class FollowController extends BaseController {
 	/**
 	 * 创建Customer
 	 */
-	public void createCustomer(Customer customer) {
-		
+	public void createCustomer() {
+		String respone = FollowService.service.createCustomer(this);
+		renderJson(respone);
 	}
 	
 	/**

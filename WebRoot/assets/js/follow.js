@@ -338,3 +338,65 @@ function save() {
         }
     });
 }
+
+/**
+ * 新建客户POPUP
+ * @returns
+ */
+function addCustomerPopup() {
+	var $modal = $('#customer-popup');
+	$modal.modal('open');
+	
+	$('#customer_name').val('');
+	$('#customer_phone').val('');
+}
+
+function addCustomer() {
+	var customer_name = $('#customer_name').val();
+	if (isNull(customer_name)) {
+		$('.am-alert').show();
+		$('.am-alert').html('客户姓名不能为空！');
+		setTimeout(function(){
+			$('.am-alert').hide();
+	    }, 2000);
+		return;
+	}
+	
+	var customer_phone = $('#customer_phone').val();
+	if (isNull(customer_phone)) {
+		$('.am-alert').show();
+		$('.am-alert').html('电话号码不能为空！');
+		setTimeout(function(){
+			$('.am-alert').hide();
+	    }, 2000);
+		return;
+	}	
+	
+	$.ajax({
+        url: "follow/createCustomer",
+        type : "POST",
+        dataType: "json",
+        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customer_name: customer_name,
+			customer_phone:customer_phone
+		},
+        success: function(data) {
+	        	console.log(data);
+	        	if(data.result == 1) {
+	        		$('.am-alert').show();
+	        		$('.am-alert').html(data.data);
+	        		
+	        		setTimeout(function(){
+	        			$('.am-alert').hide();
+	    		    }, 2000);
+	        		
+	        		setTimeout(function(){
+	        			$('#customer-popup').modal('close');
+	    		    }, 2000);
+	        		
+	        		loadFollowList($('#pageNumber').val());
+	        	} 
+        }
+    });
+}
