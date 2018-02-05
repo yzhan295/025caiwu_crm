@@ -516,4 +516,123 @@ public class DateUtil {
 
 		return runningDays;
 	}
+	
+	/**
+	 * 本周第一天
+	 * @return
+	 */
+	public static Date getWeekStartDate(){
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_WEEK, Calendar.MONDAY); 
+		cal.set(Calendar.HOUR_OF_DAY, 0);
+		cal.set(Calendar.MINUTE, 0);
+		cal.set(Calendar.SECOND, 0);
+		cal.set(Calendar.MILLISECOND, 0);
+		Date date = cal.getTime();
+		return date;
+	}
+	
+	/**
+	 * 本周最后一天
+	 * @return
+	 */
+	public static Date getWeekEndDate(){
+		Calendar cal = Calendar.getInstance();
+		cal.add(Calendar.DAY_OF_WEEK, 6);
+		cal.set(Calendar.HOUR_OF_DAY, 23);
+		cal.set(Calendar.MINUTE, 59);
+		cal.set(Calendar.SECOND, 59);
+		cal.set(Calendar.MILLISECOND, 999);
+		Date date = cal.getTime();
+		return date;
+	}
+	
+	/**
+	 * 本月第一天
+	 * @return
+	 */
+	public static Date getMonthFirstDate() {
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        c.set(Calendar.HOUR_OF_DAY, 0);
+		c.set(Calendar.MINUTE, 0);
+		c.set(Calendar.SECOND, 0);
+		c.set(Calendar.MILLISECOND, 0);
+        
+        System.out.println("===============first:"+c.getTime());
+        Date date = c.getTime();
+		return date;
+	}
+
+	/**
+	 * 本月最后一天
+	 * @return
+	 */
+	public static Date getMonthEndDate() {
+        //获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        ca.set(Calendar.HOUR_OF_DAY, 23);
+        ca.set(Calendar.MINUTE, 59);
+        ca.set(Calendar.SECOND, 59);
+        ca.set(Calendar.MILLISECOND, 999);
+        System.out.println("===============end:"+ca.getTime());
+        Date date = ca.getTime();
+		return date;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(new SimpleDateFormat("yyyy-MM-dd hh:mm:ss.SSS").format(getMonthEndDate()));
+	}
+	
+	/**
+     * 获取指定日期所在周的第一天和最后一天,用下划线连接
+     * @param dataStr
+     * @return
+     * @throws ParseException
+     */
+    public static String getFirstAndLastOfMonth(String dataStr,String dateFormat,String resultDateFormat) throws ParseException {
+        //获取当前月第一天：
+        Calendar c = Calendar.getInstance();
+        c.setTime(new SimpleDateFormat(dateFormat).parse(dataStr));
+        c.add(Calendar.MONTH, 0);
+        c.set(Calendar.DAY_OF_MONTH,1);//设置为1号,当前日期既为本月第一天
+        String first = new SimpleDateFormat(resultDateFormat).format(c.getTime());
+        System.out.println("===============first:"+first);
+
+        //获取当前月最后一天
+        Calendar ca = Calendar.getInstance();
+        ca.set(Calendar.DAY_OF_MONTH, ca.getActualMaximum(Calendar.DAY_OF_MONTH));
+        String last = new SimpleDateFormat(resultDateFormat).format(ca.getTime());
+        System.out.println("===============last:"+last);
+        return first+"_"+last;
+    }
+
+    /**
+     * 每周的第一天和最后一天
+     * @param dataStr
+     * @param dateFormat
+     * @param resultDateFormat
+     * @return
+     * @throws ParseException
+     */
+    public static String getFirstAndLastOfWeek(String resultDateFormat) {
+        Calendar cal = Calendar.getInstance();
+        int d = 0;
+        if (cal.get(Calendar.DAY_OF_WEEK) == 1) {
+            d = -6;
+        } else {
+            d = 2 - cal.get(Calendar.DAY_OF_WEEK);
+        }
+        cal.add(Calendar.DAY_OF_WEEK, d);
+        // 所在周开始日期
+        String data1 = new SimpleDateFormat(resultDateFormat).format(cal.getTime());
+        cal.add(Calendar.DAY_OF_WEEK, 6);
+        // 所在周结束日期
+        String data2 = new SimpleDateFormat(resultDateFormat).format(cal.getTime());
+        return data1 + "_" + data2;
+
+    }
 }

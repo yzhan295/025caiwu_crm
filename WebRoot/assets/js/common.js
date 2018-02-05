@@ -81,20 +81,3 @@ function saveNewPsw() {
         }
     });
 }
-
-function todayBookedCount() {
-	$.ajax({
-        url: "user/todayBookedCount",
-        type : "POST",
-        dataType: "json",
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		data: {
-		},
-        success: function(data) {
-        	console.log(data);
-        	if(data.result == 1) {
-        		$('#todayBooked').html(data.data.todayBooked);
-        	} 
-        }
-    });
-}

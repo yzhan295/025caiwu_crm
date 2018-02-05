@@ -21,7 +21,13 @@ public class UserController extends BaseController {
 		renderJson(respone);
 	}
 	
-	
+	/**
+	 * 首页统计数据
+	 */
+	public void statistics() {
+		String respone = UserService.service.statistics(this);
+		renderJson(respone);
+	}
 	
 	/**
 	 *  退出接口

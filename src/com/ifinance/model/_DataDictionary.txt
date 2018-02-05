@@ -4,12 +4,13 @@ Table: customer
 ---------------+--------------+------+-----+---------+---------
  id            | INT(10)      | NO   | PRI |         |         
  name          | VARCHAR(20)  | NO   |     |         | 姓名      
- mobile        | VARCHAR(10)  | NO   |     |         |         
+ mobile        | VARCHAR(20)  | NO   |     |         |         
  source        | INT(10)      | NO   |     |         | 渠道      
  phone_state   | INT(10)      | NO   |     |         |         
  wechat_state  | INT(10)      | NO   |     |         |         
  sms_state     | INT(10)      | NO   |     |         |         
- customer_type | INT(10)      | YES  |     |         |         
+ customer_type | INT(10)      | YES  |     |         | 0: 无意向 1:A类意向 2:B类意向 3:C类意向 4:D类意向 100:已签约
+ sign_price    | INT(10)      | NO   |     | 0       | customer_type=100:已签约才会有值
  user_id       | INT(10)      | NO   |     |         |         
  update_time   | DATETIME(19) | NO   |     |         |         
  create_time   | DATETIME(19) | NO   |     |         |         

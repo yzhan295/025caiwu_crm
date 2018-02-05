@@ -21,5 +21,88 @@ public class User extends BaseUser<User> {
 		return dao.find("select * from user where p_id=" + pid);
 	}
 	
+	/**
+	 * 今日意向客户
+	 * @param childId
+	 * @return
+	 */
+	public int getTodayIntentCount(List<User> allSubUsers)
+	{
+		StringBuffer sqlInCondition = new StringBuffer();
+		for(int i=0; i<allSubUsers.size(); i++) {
+			sqlInCondition.append(allSubUsers.get(i).getId());
+			// 最后一条数据不需要加","
+			if (i < (allSubUsers.size() - 1)) {
+				sqlInCondition.append(",");
+			}
+		}
+		
+		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+") and  to_days(create_time) = to_days(now())");
+		
+		return user.getInt("count");
+	}
+	
+	/**
+	 * 本周意向客户
+	 * @param childId
+	 * @return
+	 */
+	public int getWeekIntentCount(List<User> allSubUsers)
+	{
+		StringBuffer sqlInCondition = new StringBuffer();
+		for(int i=0; i<allSubUsers.size(); i++) {
+			sqlInCondition.append(allSubUsers.get(i).getId());
+			// 最后一条数据不需要加","
+			if (i < (allSubUsers.size() - 1)) {
+				sqlInCondition.append(",");
+			}
+		}
+		
+		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+") and  DATE_SUB(CURDATE(), INTERVAL 7 DAY) <= date(create_time)");
+		
+		return user.getInt("count");
+	}
+	
+	/**
+	 * 本月意向客户
+	 * @param childId
+	 * @return
+	 */
+	public int getMonthIntentCount(List<User> allSubUsers)
+	{
+		StringBuffer sqlInCondition = new StringBuffer();
+		for(int i=0; i<allSubUsers.size(); i++) {
+			sqlInCondition.append(allSubUsers.get(i).getId());
+			// 最后一条数据不需要加","
+			if (i < (allSubUsers.size() - 1)) {
+				sqlInCondition.append(",");
+			}
+		}
+		
+		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+") and  DATE_FORMAT(create_time,'%Y%m' ) = DATE_FORMAT(CURDATE() , '%Y%m' )");
+		
+		return user.getInt("count");
+	}
+
+	/**
+	 * 总意向客户
+	 * @param childId
+	 * @return
+	 */
+	public int getTotalIntentCount(List<User> allSubUsers)
+	{
+		StringBuffer sqlInCondition = new StringBuffer();
+		for(int i=0; i<allSubUsers.size(); i++) {
+			sqlInCondition.append(allSubUsers.get(i).getId());
+			// 最后一条数据不需要加","
+			if (i < (allSubUsers.size() - 1)) {
+				sqlInCondition.append(",");
+			}
+		}
+		
+		User user = dao.findFirst("select count(*) count from customer where user_id in ("+sqlInCondition.toString()+")");
+		
+		return user.getInt("count");
+	}
 	
 }

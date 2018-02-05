@@ -1,6 +1,5 @@
 $(function() {
 	summary();
-	todayBookedCount();
     var $fullText = $('.admin-fullText');
     $('#admin-fullscreen').on('click', function() {
         $.AMUI.fullscreen.toggle();
@@ -27,7 +26,7 @@ $(function() {
 function summary() {
 	$.AMUI.progress.start();
 	$.ajax({
-        url: "user/summary",
+        url: "user/statistics",
         type : "POST",
         dataType: "json",
         contentType : "application/x-www-form-urlencoded;charset=UTF-8",
@@ -36,10 +35,9 @@ function summary() {
         success: function(data) {
         	console.log(data);
         	if(data.result == 1) {
-        		$('#today').html(data.data.today);
-        		$('#week').html(data.data.week);
-        		$('#month').html(data.data.month);
-        		$('#total').html(data.data.total);
+        		$('#today_intent').html(data.data.today_intent);
+        		$('#month_intent').html(data.data.month_intent);
+        		$('#total_intent').html(data.data.total_intent);
         	} 
         	$.AMUI.progress.done();
         }

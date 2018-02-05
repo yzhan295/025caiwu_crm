@@ -64,7 +64,6 @@ public class UserService  extends BaseService {
 		if (null != subUsers) {
 			allSubUsers.addAll(subUsers);
 			for(int i=0; i<subUsers.size(); i++) {
-				// allSubUsers.addAll(User.dao.getUsersByPid(subUsers.get(i).getId()));
 				listSubUsersById(subUsers.get(i).getId(), allSubUsers);
 			}
 		}
@@ -73,12 +72,28 @@ public class UserService  extends BaseService {
 	/**
 	 * 统计数据
 	 */
-	public void statistics() {
+	public String statistics(BaseController bc) {
+		User user = (User)bc.getSession().getAttribute("user");
+		List<User> allUsersIncludeMyself = new ArrayList<User>();
+		// 添加当前用户自身
+		allUsersIncludeMyself.add(user);
+		// 添加我的下属员工
+		listSubUsersById(user.getId(), allUsersIncludeMyself);
+		
 		// 今日意向客户
+		int todayCount = User.dao.getTodayIntentCount(allUsersIncludeMyself);
 		
 		// 本月意向客户
+		int monthlyCount = User.dao.getMonthIntentCount(allUsersIncludeMyself);
 		
 		// 意向客户总数
+		int totalCount = User.dao.getTotalIntentCount(allUsersIncludeMyself);
+		
+		JSONObject object = new JSONObject();
+		object.put("today_intent", todayCount);
+		object.put("month_intent", monthlyCount);
+		object.put("total_intent", totalCount);
+		return respJsonSuccess(object);
 	}
 	
 	public String quit(BaseController bc)
