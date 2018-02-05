@@ -58,17 +58,6 @@ public class UserService  extends BaseService {
 		return respJsonSuccess(object);
 	}
 	
-	public void listSubUsersById(int id, List<User> allSubUsers) {
-		List<User> subUsers = User.dao.getUsersByPid(id);
-		
-		if (null != subUsers) {
-			allSubUsers.addAll(subUsers);
-			for(int i=0; i<subUsers.size(); i++) {
-				listSubUsersById(subUsers.get(i).getId(), allSubUsers);
-			}
-		}
-	}
-	
 	/**
 	 * 统计数据
 	 */

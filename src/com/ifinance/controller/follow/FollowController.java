@@ -24,8 +24,9 @@ public class FollowController extends BaseController {
 	/**
 	 * 更新Customer
 	 */
-	public void updateCustomer(Customer customer) {
-		
+	public void updateCustomer() {
+		String respone = FollowService.service.updateCustomer(this);
+		renderJson(respone);
 	}
 	
 	/**

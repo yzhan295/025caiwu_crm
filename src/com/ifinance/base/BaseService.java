@@ -1,7 +1,10 @@
 package com.ifinance.base;
 
+import java.util.List;
+
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
+import com.ifinance.model.User;
 
 public class BaseService {
 	
@@ -46,6 +49,14 @@ public class BaseService {
 		return json.toJSONString();
 	}
 	
-	
-
+	public void listSubUsersById(int id, List<User> allSubUsers) {
+		List<User> subUsers = User.dao.getUsersByPid(id);
+		
+		if (null != subUsers) {
+			allSubUsers.addAll(subUsers);
+			for(int i=0; i<subUsers.size(); i++) {
+				listSubUsersById(subUsers.get(i).getId(), allSubUsers);
+			}
+		}
+	}
 }

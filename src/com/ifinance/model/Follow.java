@@ -8,4 +8,11 @@ import com.ifinance.model.base.BaseFollow;
 @SuppressWarnings("serial")
 public class Follow extends BaseFollow<Follow> {
 	public static final Follow dao = new Follow().dao();
+	
+	public int getFollowCount(int customerId)
+	{
+		Follow follow = dao.findFirst("select count(*) count from follow where customer_id = " + customerId);
+		
+		return follow.getInt("count");
+	}
 }

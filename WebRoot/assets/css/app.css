@@ -296,7 +296,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 
 .tpl-logo img {
     display: block;
-    width: 100%;
+    margin: 0 auto;
 }
 
 .tpl-dropdown-content .task {

@@ -1,14 +1,12 @@
 $(function() {
 	
 	loadFollowList(1);
-	todayBookedCount();
 	$('#datetimepicker').datetimepicker({
 		minView: 'month',
 		language:  'zh-CN'
 	});
 	
 	$('#customer-type').change(function(){ 
-		//alert($(this).children('option:selected').val()); 
 		loadFollowList(1)
 	}); 
 	
@@ -43,7 +41,7 @@ function loadFollowList(pageNo) {
 		customer_type = '';
 	}
 	$.ajax({
-        url: "follow/listFollowDetail",
+        url: "follow/listCustomer",
         type : "POST",
         dataType: "json",
         contentType : "application/x-www-form-urlencoded;charset=UTF-8",
@@ -63,26 +61,49 @@ function loadFollowList(pageNo) {
 
 function commonFollowList(data) {
 
-	 $('#follow-list').html('');
+	$('#follow-list').html('');
     for(var i=0; i< data.data.item.length; i++) {
+    	  // 渠道
+      var source_select_template = $('#source-select-template').html();
+      source_select_template = source_select_template
+      								.replace('__ID__', data.data.item[i].id)
+      								.replace('__SELECT'+data.data.item[i].source+'__', 'selected');
+      
+      // 电话沟通
+      var phone_select_template = $('#phone-select-template').html();
+      phone_select_template = phone_select_template
+									.replace('__ID__', data.data.item[i].id)
+      								.replace('__SELECT'+data.data.item[i].phonestate+'__', 'selected');
+      
+      // 微信好友
+      var wechat_select_template = $('#wechat-select-template').html();
+      wechat_select_template = wechat_select_template
+									.replace('__ID__', data.data.item[i].id)
+      								.replace('__SELECT'+data.data.item[i].wechatState+'__', 'selected');
+      
+      // 短信状态
+      var sms_select_template = $('#sms-select-template').html();
+      sms_select_template = sms_select_template
+									.replace('__ID__', data.data.item[i].id)
+      								.replace('__SELECT'+data.data.item[i].smsState+'__', 'selected');
+      
+      // 意向客户
       var customer_select_template = $('#customer-select-template').html();
-      var temp = '__SELECT'+data.data.item[i].safeState+'__';
       customer_select_template = customer_select_template
-      								.replace('__userToken__', data.data.item[i].userToken)
-      								.replace(temp, 'selected');
-//      console.log(customer_select_template);	 
+									.replace('__ID__', data.data.item[i].id)
+      								.replace('__SELECT'+data.data.item[i].customerType+'__', 'selected');
       var tr_template = $('#follow-tr-template').html()
                 .replace('__name__', data.data.item[i].name)
-                .replace('__safeState__', customer_select_template)
-//                .replace('__platform__', data.data.item[i].platform)
-                .replace('__mobile__', data.data.item[i].mobile)
-                .replace('__wxaccount__', data.data.item[i].wxaccount == "0" ? '' : data.data.item[i].wxaccount)
-                .replace('__qmcount__', data.data.item[i].qmcount)
-                .replace('__collcount__', data.data.item[i].collcount)
-                .replace('__createTime__', data.data.item[i].createTime)
-                .replace('__hangye__', data.data.item[i].area + '-' +data.data.item[i].hangye)
-                .replace('__userToken__', data.data.item[i].userToken)
-                .replace('__userToken_book__', data.data.item[i].userToken);
+                .replace('__customerstate__', customer_select_template)
+                .replace('__source__', source_select_template)
+                .replace('__phone__', phone_select_template)
+                .replace('__wechat__', wechat_select_template)
+                .replace('__sms__', sms_select_template)
+                .replace('__followsaler__', data.data.item[i].followsaler)
+                .replace('__followcount__', data.data.item[i].followcount)
+                .replace('__followtime__', isNull(data.data.item[i].followtime) ? '' : data.data.item[i].followtime)
+                .replace('__followdesc__', isNull(data.data.item[i].followdesc) ? '': data.data.item[i].followdesc)
+                .replace('__mobile__', data.data.item[i].mobile);
       
       $('#follow-list').append(tr_template);
     } 
@@ -127,87 +148,111 @@ function appendPaginate(paginateNo, isActive) {
 	}
 }
 
-function commonFollowList1(data) {
 
-   $('#follow-list').html('');
-   for(var i=0; i< data.data.item.length; i++) {
-     var customer_select_template = $('#customer-select-template').html();
-     var temp = '__SELECT'+data.data.item[i].safeState+'__';
-     customer_select_template = customer_select_template
-     								.replace('__userToken__', data.data.item[i].userToken)
-     								.replace(temp, 'selected');
-//     console.log(customer_select_template);	 
-     var tr_template = $('#follow-tr-template').html()
-               .replace('__name__', data.data.item[i].name)
-               .replace('__safeState__', customer_select_template)
-//               .replace('__platform__', data.data.item[i].platform)
-               .replace('__mobile__', data.data.item[i].mobile)
-               .replace('__wxaccount__', data.data.item[i].wxaccount == "0" ? '' : data.data.item[i].wxaccount)
-               .replace('__qmcount__', data.data.item[i].qmcount)
-               .replace('__collcount__', data.data.item[i].collcount)
-               .replace('__createTime__', data.data.item[i].createTime)
-               .replace('__hangye__', data.data.item[i].area + '-' +data.data.item[i].hangye)
-               .replace('__userToken__', data.data.item[i].userToken)
-               .replace('__userToken_book__', data.data.item[i].userToken);
-     
-     $('#follow-list').append(tr_template);
-   } 
-
-   $('.am-pagination').html('');
-   
-   if (data.data.pageNumber != 1) {
-       $('.am-pagination').append('<li class="am-pagination-first "><a href="javascript:void(0);" onclick="search(1)">第一页</a></li>');
-       $('.am-pagination').append('<li class="am-pagination-first "><a href="javascript:void(0);" onclick="search('+(data.data.pageNumber-1)+')">上一页</a></li>');
-   }
-
-   if (data.data.pageNumber < 5) {
-  	 var allPage = (data.data.totalPage >= 10) ? 10 : data.data.totalPage;
-  	 
-  	 for(var i=1; i<=allPage; i++) {
-  		 appendPaginate(i, data.data.pageNumber == i);
-  	 }
-   } else if (data.data.totalPage - data.data.pageNumber < 5) {
-  	 var fromIndex = (data.data.totalPage - 9 > 0) ? (data.data.totalPage - 9) : 1;
-  	 
-  	 for(var i=fromIndex; i<=data.data.totalPage; i++) {
-  		 appendPaginate(i, data.data.pageNumber == i);
-  	 }
-   } else {
-  	 for(var i=data.data.pageNumber-4; i<=data.data.pageNumber+5; i++) {
-  		 appendPaginate(i, data.data.pageNumber == i);
-  	 }
-   }
-   
-   if (data.data.totalPage > 0 && (data.data.pageNumber != data.data.totalPage)) {
-  	$('.am-pagination').append('<li class="am-pagination-last"><a href="javascript:void(0);" onclick="search('+(data.data.pageNumber+1)+')">下一页</a></li>');
-   	$('.am-pagination').append('<li class="am-pagination-last"><a href="javascript:void(0);" onclick="search('+(data.data.totalPage)+')">最末页</a></li>');
-   }                 
-
-}
-
-function appendPaginate1(paginateNo, isActive) {
-	if (isActive) {
-		$('.am-pagination').append('<li class="am-active"><a href="javascript:void(0);">'+paginateNo+'</a></li>')
-	} else {
-		$('.am-pagination').append('<li><a href="javascript:void(0);" onclick="search('+paginateNo+')">'+paginateNo+'</a></li>')
-	}
-}
-
-function changeCustomerType(typeVal, userToken){     
-	console.log(typeVal + ' ' + userToken);
+function changeSourceType(val, id){     
 	 $.ajax({
-        url: "market/changeState",
+       url: "follow/updateCustomer",
+       type : "POST",
+       dataType: "json",
+       contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customerId: id,
+			source: val
+		},
+       success: function(data) {
+       	if(data.result == 1) {
+       		$('.am-alert').show();
+       		$('.am-alert').html(data.data);
+       		
+       		setTimeout(function(){
+       			$('.am-alert').hide();
+   		    }, 2000);
+       	}
+       }
+    });
+} 
+
+function changePhoneType(val, id){     
+	 $.ajax({
+       url: "follow/updateCustomer",
+       type : "POST",
+       dataType: "json",
+       contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customerId: id,
+			phone: val
+		},
+       success: function(data) {
+       	if(data.result == 1) {
+       		$('.am-alert').show();
+       		$('.am-alert').html(data.data);
+       		
+       		setTimeout(function(){
+       			$('.am-alert').hide();
+   		    }, 2000);
+       	}
+       }
+    });
+} 
+
+function changeWechatType(val, id){     
+	 $.ajax({
+       url: "follow/updateCustomer",
+       type : "POST",
+       dataType: "json",
+       contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customerId: id,
+			wechat: val
+		},
+       success: function(data) {
+       	if(data.result == 1) {
+       		$('.am-alert').show();
+       		$('.am-alert').html(data.data);
+       		
+       		setTimeout(function(){
+       			$('.am-alert').hide();
+   		    }, 2000);
+       	}
+       }
+    });
+} 
+
+function changeSmsType(val, id){     
+	 $.ajax({
+       url: "follow/updateCustomer",
+       type : "POST",
+       dataType: "json",
+       contentType : "application/x-www-form-urlencoded;charset=UTF-8",
+		data: {
+			customerId: id,
+			sms: val
+		},
+       success: function(data) {
+       	if(data.result == 1) {
+       		$('.am-alert').show();
+       		$('.am-alert').html(data.data);
+       		
+       		setTimeout(function(){
+       			$('.am-alert').hide();
+   		    }, 2000);
+       	}
+       }
+    });
+} 
+
+function changeCustomerType(val, id){     
+	 $.ajax({
+        url: "follow/updateCustomer",
         type : "POST",
         dataType: "json",
         contentType : "application/x-www-form-urlencoded;charset=UTF-8",
 		data: {
-			userToken: userToken,
-			type: typeVal
+			customerId: id,
+			customerType: val
 		},
         success: function(data) {
         	if(data.result == 1) {
-//        		$('#my-alert').modal('open');
-//        		$('#my-alert .am-modal-bd').html(data.data);
         		$('.am-alert').show();
         		$('.am-alert').html(data.data);
         		
@@ -218,150 +263,3 @@ function changeCustomerType(typeVal, userToken){
         }
      });
 }  
-
-function book(userToken) {
-	 var $modal = $('#my-popup');
-	 $modal.modal('open');
-	 $('#error-alert1').html('');
-	 $('#my-popup').data('userToken', userToken);
-	 
-	 $('#wxAccount').val('');
-	 $('#bookedTime').val('');
-	 $('#comment').val('');
-	 
-	 $.ajax({
-        url: "market/queryBookeds",
-        type : "POST",
-        dataType: "json",
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		data: {
-			userToken: userToken
-		},
-        success: function(data) {
-        	if(data.result == 1) {
-        		$('#wxAccount').val(data.data.wxaccount);
-        		$('#bookedTime').val(data.data.bookedTime);
-        		$('#comment').val(data.data.comment);
-        	}
-        }
-     });
-	 
-}
-
-function search(pageNo) {
-	$.AMUI.progress.start();
-	$('#follow-list').data('pageNo', pageNo);
-	$.ajax({
-        url: "market/search",
-        type : "POST",
-        dataType: "json",
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		data: {
-			page: pageNo,
-			mobile: $('#mobile').val(),
-			uname: $('#uname').val()
-		},
-        success: function(data) {
-        	console.log(data);
-        	if(data.result == 1) {
-        		commonFollowList1(data);
-        	}
-        	$.AMUI.progress.done();
-        }
-    });
-}
-
-function saveBook() {
-	var userToken = $('#my-popup').data('userToken');
-	var wxAccount = $('#wxAccount').val();
-	var bookedTime = $('#bookedTime').val();
-	var comment = $('#comment').val();
-	
-	if (isNull(wxAccount)) {
-		$('#error-alert1').html('微信号不能为空！');
-		return;
-	}
-	
-	if (isNull(bookedTime)) {
-		$('#error-alert1').html('预约时间不能为空！');
-		return;
-	}
-	
-	if (isNull(comment)) {
-		$('#error-alert1').html('备注不能为空！');
-		return;
-	}	
-	
-	$.ajax({
-        url: "market/booked",
-        type : "POST",
-        dataType: "json",
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		data: {
-			userToken: userToken,
-			wxAccount: wxAccount,
-			bookedTime: bookedTime,
-			comment: comment
-		},
-        success: function(data) {
-        	console.log(data);
-        	if(data.result == 1) {
-        		$('#error-alert1').html('预约成功！');
-        		
-        		setTimeout(function(){
-        			$('#my-popup').modal('close');
-    		    }, 2000);
-        	} 
-        }
-    });
-}
-
-function openDetail(userToken) {
-	var $modal = $('#detail-popup');
-	$modal.modal('open');
-	$('#query-log-list').html('');
-	$('#collect-list').html('');
-	
-	$('.am-tabs-nav li').removeClass('am-active');
-	$('.am-tabs-nav li:first').addClass('am-active');
-	$('.am-tab-panel').removeClass('am-active');
-	$('.am-tab-panel:first').addClass('am-active');
-	$.ajax({
-        url: "market/getUserQueryLog",
-        type : "POST",
-        dataType: "json",
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		data: {
-			userToken: userToken
-		},
-        success: function(data) {
-        	console.log(data);
-        	if(data.result == 1) {
-        		for(var i=0; i< data.data.length; i++) {
-        			var templateQueryLog = '<tr><td>'+data.data[i].content+'</td><td>'+data.data[i].count+'</td></tr>';  
-        			$('#query-log-list').append(templateQueryLog);
-        		}
-        	} 
-        }
-    });
-	
-	$.ajax({
-        url: "market/getUserCollect",
-        type : "POST",
-        dataType: "json",
-        contentType : "application/x-www-form-urlencoded;charset=UTF-8",
-		data: {
-			userToken: userToken
-		},
-        success: function(data) {
-        	console.log(data);
-        	if(data.result == 1) {
-        		for(var i=0; i< data.data.item.length; i++) {
-        			var templateCollect = '<tr><td>'+data.data.item[i].name+'</td></tr>';  
-        			$('#collect-list').append(templateCollect);
-        		}
-        	} 
-        }
-    });
-}
-

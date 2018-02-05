@@ -45,13 +45,12 @@
                             <div class="am-form-group">
                                 <select data-am-selected="{btnSize: 'sm'}" id="customer-type">
 					              <option value="all">全部客户</option>
-					              <option value="1">优质</option>
-					              <option value="2">普通</option>
-					              <option value="3">无效客户</option>
-					              <option value="0">未联系</option>
-					              <option value="4">未接通</option>
-					              <option value="5">已签单</option>
-					              <option value="6">空号</option>
+					              <option value="0">无意向</option>
+					              <option value="1">A类意向</option>
+					              <option value="2">B类意向</option>
+					              <option value="3">C类意向</option>
+					              <option value="4">D类意向</option>
+					              <option value="100">已签单</option>
 					            </select>
                             </div>
                         </div>
@@ -66,11 +65,12 @@
                                             
                                             <th >姓名</th>
                                             <th >电话号码</th>
-                                            <th >渠道</th>
-                                            <th >电话沟通</th>
-                                            <th >微信好友</th>
-                                            <th >短信状态</th>
+                                            <th >渠道来源&nbsp;&nbsp;&nbsp;&nbsp;</th>
+                                            <th >电话沟通&nbsp;&nbsp;</th>
+                                            <th >微信好友&nbsp;&nbsp;</th>
+                                            <th >短信状态&nbsp;&nbsp;</th>
                                             <th >意向客户类型</th>
+                                            <th >跟单人</th>
                                             <th >跟单次数</th>
                                             <th >跟单时间</th>
                                             <th >跟单信息</th>
@@ -211,63 +211,73 @@
             <td>__name__</td>
             <td>__mobile__</td>
             <td>
-            		<select>
-            			<option>起名助手</option>
-            			<option>QQ</option>
-            			<option>电话</option>
-            		</select>
+            		__source__
             	</td>
             <td>
-	            <select>
-					<option>已接通</option>
-					<option>未接通</option>
-					<option>在忙</option>
-				</select>
+	            __phone__
             </td>
             <td>
-	            <select>
-					<option>申请中</option>
-					<option>已通过</option>
-					<option>在沟通</option>
-				</select>
+	            __wechat__
             </td>
             <td>
-	            <select>
-					<option>已发</option>
-					<option>未发</option>
-				</select>
+	            __sms__
             </td>
             <td>
-	            <select>
-					<option>A类</option>
-					<option>B类</option>
-					<option>C类</option>
-					<option>D类</option>
-				</select>
+	            __customerstate__
 	        </td>
-	        <td>4</td>
-            <td>__createTime__</td>
-            <td>客户正在想名字...</td>
+	        <td>__followsaler__</td>
+	        <td>__followcount__</td>
+            <td>__followtime__</td>
+            <td>__followdesc__</td>
             <td>
                 <div class="am-btn-toolbar">
                     <div class="am-btn-group am-btn-group-xs">
-                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick="openDetail('__userToken__');"><span class="am-icon-pencil-square-o"></span> 详情</button>
-                        <button type="button" class="am-btn am-btn-default am-btn-xs am-hide-sm-only" onclick="book('__userToken_book__');"><span class="am-icon-copy"></span> 预约</button>
+                        <button type="button" class="am-btn am-btn-default am-btn-xs am-text-secondary" onclick="openDetail('__userToken__');"><span class="am-icon-pencil-square-o"></span> 跟单</button>
 
                     </div>
                 </div>
             </td>
         </tr>   
     </script>
+    <script id="source-select-template">
+        <select data-am-selected="{btnSize: 'sm'}" onchange="changeSourceType(this.options[this.options.selectedIndex].value, __ID__)">
+			<option value="0" __SELECT0__>起名助手</option>
+			<option value="1" __SELECT1__>QQ</option>
+			<option value="2" __SELECT2__>电话</option>
+			<option value="3" __SELECT3__>搜索引擎</option>
+			<option value="4" __SELECT4__>其他</option>
+		</select>
+	</script>
+	<script id="phone-select-template">
+		<select data-am-selected="{btnSize: 'sm'}" onchange="changePhoneType(this.options[this.options.selectedIndex].value, __ID__)">
+			<option value="0" __SELECT0__>未拨打</option>
+			<option value="1" __SELECT1__>已接通</option>
+			<option value="2" __SELECT2__>未接通</option>
+			<option value="3" __SELECT3__>在忙</option>
+		</select>
+	</script>
+	<script id="wechat-select-template">
+	    <select data-am-selected="{btnSize: 'sm'}" onchange="changeWechatType(this.options[this.options.selectedIndex].value, __ID__)">
+			<option value="0" __SELECT0__>未申请</option>
+			<option value="1" __SELECT1__>申请中</option>
+			<option value="2" __SELECT2__>已通过</option>
+			<option value="3" __SELECT3__>在沟通</option>
+		</select>
+	</script>
+	<script id="sms-select-template">
+	    <select data-am-selected="{btnSize: 'sm'}" onchange="changeSmsType(this.options[this.options.selectedIndex].value, __ID__)">
+			<option value="0" __SELECT0__>未发</option>
+			<option value="1" __SELECT1__>已发</option>
+		</select>
+	</script>
     <script id="customer-select-template">
-	   <select data-am-selected="{btnSize: 'sm'}" onchange="changeCustomerType(this.options[this.options.selectedIndex].value, '__userToken__')">
-	      <option value="1" __SELECT1__>优质</option>
-	      <option value="2" __SELECT2__>普通</option>
-	      <option value="3" __SELECT3__>无效客户</option>
-	      <option value="0" __SELECT0__>未联系</option>
-	      <option value="4" __SELECT4__>未接通</option>
-	      <option value="5" __SELECT5__>已签单</option>
-	      <option value="6" __SELECT6__>空号</option>
+	   <select data-am-selected="{btnSize: 'sm'}" onchange="changeCustomerType(this.options[this.options.selectedIndex].value, __ID__)">
+	      <option value="0" __SELECT0__>无意向</option>
+	      <option value="1" __SELECT1__>A类意向</option>
+	      <option value="2" __SELECT2__>B类意向</option>
+	      <option value="3" __SELECT3__>C类意向</option>
+	      <option value="4" __SELECT4__>D类意向</option>
+	      <option value="100" __SELECT100__>已签单</option>
 	  </select>
     </script>
     <script src="assets/js/jquery.min.js"></script>
